@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
+import {getDictionary} from "@/types/locals";
 
 export const metadata: Metadata = {
   title: {
@@ -26,13 +27,17 @@ export const metadata: Metadata = {
 }
 
 interface RootLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode,
+  params: { lang: string }
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children,params }: RootLayoutProps) {
+  // @ts-ignore
+  const dictionary = await getDictionary(params.lang)
+
   return (
     <>
-      <html lang="en" suppressHydrationWarning>
+      <html lang={params.lang} dir={dictionary.direction} suppressHydrationWarning>
         <head />
         <body
           className={cn(
